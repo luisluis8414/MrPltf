@@ -1,5 +1,6 @@
 package com.luw.main;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class GameWindow {
@@ -11,6 +12,10 @@ public class GameWindow {
         jframe.setDefaultCloseOperation(3);
         jframe.add(gamePanel);
         jframe.setLocationRelativeTo(null);
+
+        ImageIcon customIcon = new ImageIcon("ressources/logo.png");
+
+        jframe.setIconImage(customIcon.getImage());
         jframe.setVisible(true);
     }
 }

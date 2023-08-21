@@ -26,7 +26,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.luw.App'
+    mainClass = 'com.luw.main.MainClass'
 }
 
 tasks.named('test') {
