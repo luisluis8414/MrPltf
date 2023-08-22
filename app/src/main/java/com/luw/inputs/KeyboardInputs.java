@@ -5,39 +5,49 @@ import java.awt.event.KeyListener;
 
 import com.luw.main.GamePanel;
 
-public class KeyboardInputs implements KeyListener{
+import static com.luw.utils.Constants.Directions.*;
+
+public class KeyboardInputs implements KeyListener {
 
   private GamePanel gamePanel;
-  public KeyboardInputs(GamePanel gamePanel){
-    this.gamePanel=gamePanel;
+
+  public KeyboardInputs(GamePanel gamePanel) {
+    this.gamePanel = gamePanel;
   }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-       switch(e.getKeyCode()){
-        case KeyEvent.VK_W:
-        gamePanel.changeYDelta(-5);
+  @Override
+  public void keyPressed(KeyEvent e) {
+    switch (e.getKeyCode()) {
+      case KeyEvent.VK_W:
+        gamePanel.setDirection(UP);
         break;
-        case KeyEvent.VK_S:
-        gamePanel.changeYDelta(5);
-         break;
-        case KeyEvent.VK_A:
-        gamePanel.changeXDelta(-5);
-         break;
-        case KeyEvent.VK_D:
-         gamePanel.changeXDelta(5);
-         break;
-       }
+      case KeyEvent.VK_S:
+        gamePanel.setDirection(DOWN);
+        break;
+      case KeyEvent.VK_A:
+        gamePanel.setDirection(LEFT);
+        break;
+      case KeyEvent.VK_D:
+        gamePanel.setDirection(RIGHT);
+        break;
     }
+  }
 
-    @Override
-    public void keyReleased(KeyEvent arg0) {
-         
+  @Override
+  public void keyReleased(KeyEvent e) {
+    switch (e.getKeyCode()) {
+      case KeyEvent.VK_W:
+      case KeyEvent.VK_S:
+      case KeyEvent.VK_A:
+      case KeyEvent.VK_D:
+      gamePanel.setMoving(false);
+      break;
     }
+  }
 
-    @Override
-    public void keyTyped(KeyEvent arg0) {
-    
-    }
-    
+  @Override
+  public void keyTyped(KeyEvent arg0) {
+
+  }
+
 }
