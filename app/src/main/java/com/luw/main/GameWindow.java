@@ -8,13 +8,15 @@ public class GameWindow {
 
     public GameWindow(GamePanel gamePanel){
         jframe = new JFrame();
-        jframe.setSize(400, 400);
+        jframe.setSize(1920, 1080);
         jframe.setDefaultCloseOperation(3);
         jframe.add(gamePanel);
         jframe.setLocationRelativeTo(null);
 
         ImageIcon customIcon = new ImageIcon("ressources/logo.png");
 
+        // jframe.setUndecorated(true);
+        jframe.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jframe.setIconImage(customIcon.getImage());
         jframe.setVisible(true);
     }
