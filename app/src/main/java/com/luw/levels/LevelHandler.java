@@ -46,6 +46,9 @@ public class LevelHandler {
                  g.drawImage(levelSprite[index], Game.TILES_SIZE*i, Game.TILES_SIZE*j, Game.TILES_SIZE, Game.TILES_SIZE, null);
             }
         }
-       
+    }
+
+    public Level getCurrentLevel(){
+        return levelOne;
     }
 }

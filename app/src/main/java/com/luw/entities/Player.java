@@ -4,12 +4,12 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static com.luw.utils.Constants.PlayerConstants.*;
+import static com.luw.utils.HelpMethods.CanMoveHere;
 
 import com.luw.main.Game;
+import com.luw.utils.HelpMethods;
 import com.luw.utils.LoadSave;
 
 public class Player extends Entity {
@@ -19,10 +19,15 @@ public class Player extends Entity {
     private boolean left, up, right, down, flipped = false;
     private boolean moving = false, attacking = false;
     private float playerSpeed = 2.0f;
+    private int[][] lvlData;
+    private float xDrawOffset=21*Game.SCALE;
+    private float yDrawOffset=4*Game.SCALE;
 
-    public Player(float x, float y) {
-        super(x, y);
+
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadAnimations();
+        initHitbox(x, y, 20*Game.SCALE, 28*Game.SCALE);
     }
 
     public void update() {
@@ -32,38 +37,49 @@ public class Player extends Entity {
     };
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, (int) (85 * Game.SCALE),
-                (int) (60 * Game.SCALE), null);
+        g.drawImage(animations[playerAction][aniIndex], (int)hitBox.x - (int)xDrawOffset, (int)hitBox.y - (int)yDrawOffset, width,
+                height, null);
+        drawHitbox(g);
     };
 
     private void updatePosition() {
         moving = false;
+        if (!left && !right && !up && !down)
+            return;
+
+        float xSpeed = 0, ySpeed = 0;
         if (left && !right) {
-            x -= playerSpeed;
-            moving = true;
+            xSpeed = -playerSpeed;
         } else if (right && !left) {
-            x += playerSpeed;
-            moving = true;
+            xSpeed = playerSpeed;
         }
 
         if (up && !down) {
-            y -= playerSpeed;
-            moving = true;
-
+            ySpeed = -playerSpeed;
         } else if (down && !up) {
-            y += playerSpeed;
-            moving = true;
+            ySpeed = playerSpeed;
+        }
 
+        // if(CanMoveHere(x+xSpeed,y+ySpeed, width, height, lvlData)){
+        //     this.x+=xSpeed;
+        //     this.y+=ySpeed;
+        //     moving=true;
+        // }
+
+        
+        if(CanMoveHere(hitBox.x+xSpeed,hitBox.y+ySpeed, hitBox.width, hitBox.height, lvlData)){
+            hitBox.x+=xSpeed;
+            hitBox.y+=ySpeed;
+            moving=true;
         }
     }
 
     public void checkDir() {
         if (right && !left) {
             if (flipped) {
-                
                 for (BufferedImage[] animation : animations) {
                     for (int i = 0; i < animation.length; i++) {
-                        animation[i] = flipImage(animation[i]);
+                        animation[i] = HelpMethods.FlipImage(animation[i]);
                     }
                 }
                 flipped = false;
@@ -71,22 +87,15 @@ public class Player extends Entity {
         }
         if (left && !right) {
             if (!flipped) {
-               
+
                 for (BufferedImage[] animation : animations) {
                     for (int i = 0; i < animation.length; i++) {
-                        animation[i] = flipImage(animation[i]);
+                        animation[i] = HelpMethods.FlipImage(animation[i]);
                     }
                 }
                 flipped = true;
             }
         }
-    }
-
-    private BufferedImage flipImage(BufferedImage image) {
-        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-        tx.translate(-image.getWidth(null), 0);
-        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        return op.filter(image, null);
     }
 
     private void setAnimation() {
@@ -134,7 +143,10 @@ public class Player extends Entity {
                 animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
             }
         }
+    }
 
+    public void loadLevelData(int[][] lvlData) {
+        this.lvlData = lvlData;
     }
 
     public void resetDirBooleans() {
