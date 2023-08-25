@@ -17,6 +17,9 @@ public class KeyboardInputs implements KeyListener {
 
   @Override
   public void keyPressed(KeyEvent e) {
+    if (e.getKeyCode() == 32)
+      gamePanel.getGame().getPlayer().setAttacking(true);
+
     switch (e.getKeyCode()) {
       case KeyEvent.VK_W:
         gamePanel.getGame().getPlayer().setUp(true);
@@ -26,10 +29,12 @@ public class KeyboardInputs implements KeyListener {
         break;
       case KeyEvent.VK_A:
         gamePanel.getGame().getPlayer().setLeft(true);
+        gamePanel.getGame().getPlayer().checkDir();
         ;
         break;
       case KeyEvent.VK_D:
         gamePanel.getGame().getPlayer().setRight(true);
+        gamePanel.getGame().getPlayer().checkDir();
         ;
         break;
     }

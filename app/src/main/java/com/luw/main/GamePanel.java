@@ -13,6 +13,8 @@ import com.luw.inputs.KeyboardInputs;
 import com.luw.inputs.MouseInputs;
 import static com.luw.utils.Constants.PlayerConstants.*;
 import static com.luw.utils.Constants.Directions.*;
+import static com.luw.main.Game.GAME_WIDTH;
+import static com.luw.main.Game.GAME_HEIGHT;;
 
 
 public class GamePanel extends JPanel {
@@ -34,8 +36,9 @@ public class GamePanel extends JPanel {
 
 
     private void setPanelSize(){
-        Dimension size = new Dimension(1280, 800);
+        Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
         setPreferredSize(size);
+        System.out.println("Gamesize: " + GAME_WIDTH + " x " + GAME_HEIGHT);
     }
     
     public void updateGame(){

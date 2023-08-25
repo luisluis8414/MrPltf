@@ -3,6 +3,7 @@ package com.luw.main;
 import java.awt.Graphics;
 
 import com.luw.entities.Player;
+import com.luw.levels.LevelHandler;
 
 public class Game implements Runnable{
     private GameWindow gameWindow;
@@ -11,6 +12,17 @@ public class Game implements Runnable{
     private final int FPS_SET=120;
     private final int UPS_SET=200;
     private Player player;
+    private LevelHandler levelHandler;
+
+    public final static int TILES_DEFAULT_SIZE=32;
+    public final static float SCALE =2f;
+    public final static int TILES_IN_WIDTH=26; 
+    public final static int TILES_IN_HEIGHT=14; 
+    public final static int TILES_SIZE=(int) (TILES_DEFAULT_SIZE * SCALE); 
+    public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+    public final static int GAME_HEIGHT= TILES_SIZE * TILES_IN_HEIGHT;
+ 
+
 
     public Game() {
         initClasses();
@@ -25,6 +37,7 @@ public class Game implements Runnable{
 
     private void initClasses(){
         player = new Player(200, 200);
+        levelHandler = new LevelHandler(this);
     }
 
     private void startGameLoop(){
@@ -37,7 +50,8 @@ public class Game implements Runnable{
     }
 
     public void render(Graphics g){
-        player.render(g);
+        levelHandler.draw(g);
+         player.render(g);
     }
 
     public Player getPlayer(){
@@ -45,7 +59,7 @@ public class Game implements Runnable{
     }
   
     
-    //Gameloop 
+    //Gameloop - even better now 
     @Override
     public void run() {
         double timePerFrame=1000000000.0/FPS_SET;
@@ -84,7 +98,7 @@ public class Game implements Runnable{
             
             if(System.currentTimeMillis()-lastCheck >= 1000){
                 lastCheck=System.currentTimeMillis();
-                System.out.println("FPS: " + frames+" | UPS: "+updates);
+                // System.out.println("FPS: " + frames+" | UPS: "+updates);
                 frames=0;
                 updates=0;
             }
